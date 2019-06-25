@@ -22,15 +22,21 @@ class Main extends React.Component{
   
   constructor(props){
       super(props);
-      //this.state =;
+      
     this.addTodo = this.addTodo.bind(this);
+    this.state = {value:''};
+
+  }
+  textboxChangeHandler = (e) =>{
+    e.persist();
+    this.setState({value : e.target.value});
 
   }
   addTodo = () => {
-     console.log('in todo');   
-    const todo = { task: document.getElementById("textbox1").value, status :'pending'}
-    
-      this.props.addTodo(todo);
+     
+    const todo = { task: this.state.value, status :'pending'}
+    this.setState({value : ''});
+    this.props.addTodo(todo);
   }
   completedTodo = (item) => {
     console.log('in completedtodo');
@@ -41,8 +47,13 @@ class Main extends React.Component{
   render (){
     
     return <div>
-      <span>Todo</span><input type="textbox" id="textbox1" />
-      <button onClick={this.addTodo}  >Add</button>
+     <form action="">
+          <label>Todo
+            <input type="textbox" id="textbox1" value={this.state.value} onChange={this.textboxChangeHandler}/>
+          </label>
+          
+         <input type="button" onClick={this.addTodo}  value="Add"/>
+     </form>
       <ListTodo todo={this.props.todoList} changeToComplete={this.completedTodo}/>
 
     </div>
