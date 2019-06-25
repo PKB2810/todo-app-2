@@ -12,7 +12,7 @@ const store = createStore(reducer, initialState);
 const ParentDiv = styled.div`
     background-color:#d6f441;
     
-    
+    height: 100%;
 `;
 function App() {
   return (

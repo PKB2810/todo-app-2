@@ -30,11 +30,7 @@ const StlyedLabel = styled.span`
     color:#f442a7;
 `;
 
-const ParentDiv = styled.div`
-    background-color:#d6f441;
-    width:100%;
-    height:100%;
-`;
+
 
 
 class Main extends React.Component {
@@ -62,7 +58,7 @@ class Main extends React.Component {
 
   render() {
     return (
-      <ParentDiv>
+      <div>
         <Heading >Todo App</Heading>
         <Form>
           <FormGroup>
@@ -94,7 +90,7 @@ class Main extends React.Component {
               </Row>
           </FormGroup>
           </Form>
-      </ParentDiv>
+      </div>
     );
   }
 }
