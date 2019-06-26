@@ -1,3 +1,2 @@
-export const PENDING ='Pending';
-//export const COMPLETED ='completed';
-
+export const PENDING = "Pending";
+export const COMPLETED = "completed";
