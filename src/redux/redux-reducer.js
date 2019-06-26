@@ -12,16 +12,13 @@ function reducer(state = initialState.todoList, action) {
       return todoList;
 
     case COMPLETED_TODO:
-      const pendingtodoList = state.filter(
-        item => item.id !== action.payload.id
-      );
-      const tempCompletedTodoList = state.filter(
-        item => item.id === action.payload.id
-      );
-      const completedTasks = tempCompletedTodoList.map(taskItem => {
-        return { ...taskItem, status: COMPLETED };
+      const currentTodoList = state.map(item => {
+        if (item.id === action.payload.id) {
+          item.status = COMPLETED;
+        }
+        return item;
       });
-      const currentTodoList = pendingtodoList.concat(completedTasks);
+
       console.log(currentTodoList); //display all tasks
       localStorage.setItem("todoList", JSON.stringify(currentTodoList));
 

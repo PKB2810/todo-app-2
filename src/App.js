@@ -11,18 +11,13 @@ import styled from "styled-components";
 const rootReducer = combineReducers({ todoList: reducer });
 
 const store = createStore(rootReducer, initialState);
-const ParentDiv = styled.div`
-  background-color: #d6f441;
-
-  height: 100%;
-`;
 function App() {
   return (
-    <ParentDiv>
+    <div id="parent">
       <Provider store={store}>
         <Main />
       </Provider>
-    </ParentDiv>
+    </div>
   );
 }
 

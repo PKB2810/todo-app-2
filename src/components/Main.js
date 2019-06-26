@@ -1,5 +1,4 @@
 import React, { useState, useEffect } from "react";
-import styled from "styled-components";
 import ListTodo from "./list-todo-component";
 import { connect } from "react-redux";
 import { addTodo, completedTodo } from "../redux/actionCreators";
@@ -18,18 +17,6 @@ const mapDispatchToProps = dispatch => {
     completedTodo: todo => dispatch(completedTodo(todo))
   };
 };
-
-//styled components
-const Heading = styled.h1`
-  font-weight: bold;
-  color: palevioletred;
-  text-align: center;
-`;
-const StlyedLabel = styled.span`
-  font-size: 20px;
-  color: #f442a7;
-`;
-//var count = 0;
 
 function Main({ todoList, addTodo, completedTodo }) {
   /* constructor(props) {
@@ -55,8 +42,8 @@ function Main({ todoList, addTodo, completedTodo }) {
     localStorage.setItem("count", count.toString());
     const todo = { id: count, task: value, status: PENDING };
     if (value.trim() !== "") {
-      setValue(" ");
       addTodo(todo);
+      setValue("");
     }
   };
   const completeTask = item => {
@@ -65,12 +52,12 @@ function Main({ todoList, addTodo, completedTodo }) {
 
   return (
     <div>
-      <Heading>Todo App</Heading>
+      <h1 id="heading"> Todo App</h1>
       <Form>
         <FormGroup>
           <Row>
             <Col className=" offset-2 col-12 col-sm-1">
-              <StlyedLabel>Todo:</StlyedLabel>
+              <span className="textStlye">Todo:</span>
             </Col>
             <Col className=" col-12 col-sm-6">
               <Input value={value} onChange={textboxChangeHandler} />
@@ -85,7 +72,11 @@ function Main({ todoList, addTodo, completedTodo }) {
         <FormGroup>
           <Row>
             <Col className="offset-3 col-sm-6">
-              <ListTodo todo={todoList} changeToComplete={completeTask} />
+              <ListTodo
+                todo={todoList}
+                changeToComplete={completeTask}
+                textboxChangeHandler={textboxChangeHandler}
+              />
             </Col>
           </Row>
         </FormGroup>
