@@ -1,7 +1,7 @@
 import React, { useState, useEffect } from "react";
 import ListTodo from "./list-todo-component";
 import { connect } from "react-redux";
-import { addTodo, completedTodo } from "../redux/actionCreators";
+import { addTodo, completedTodo, updateTodo } from "../redux/actionCreators";
 import { PENDING } from "../globalConstants";
 import { Button, Form, FormGroup, Input, Row, Col } from "reactstrap";
 
@@ -14,11 +14,12 @@ const mapStateToProps = state => {
 const mapDispatchToProps = dispatch => {
   return {
     addTodo: todo => dispatch(addTodo(todo)),
-    completedTodo: todo => dispatch(completedTodo(todo))
+    completedTodo: todo => dispatch(completedTodo(todo)),
+    updateTodo: (todo, updatedTask) => dispatch(updateTodo(todo, updatedTask))
   };
 };
 
-function Main({ todoList, addTodo, completedTodo }) {
+function Main({ todoList, addTodo, completedTodo, updateTodo }) {
   /* constructor(props) {
     super(props);
 
@@ -33,6 +34,7 @@ function Main({ todoList, addTodo, completedTodo }) {
   }, [value]);
 
   const textboxChangeHandler = e => {
+    console.log(e.target);
     setValue(e.target.value);
   };
   const addTask = () => {
@@ -48,6 +50,9 @@ function Main({ todoList, addTodo, completedTodo }) {
   };
   const completeTask = item => {
     completedTodo(item);
+  };
+  const updateTask = (item, updatedtask) => {
+    updateTodo(item, updatedtask);
   };
 
   return (
@@ -76,6 +81,7 @@ function Main({ todoList, addTodo, completedTodo }) {
                 todo={todoList}
                 changeToComplete={completeTask}
                 textboxChangeHandler={textboxChangeHandler}
+                updateTodo={updateTask}
               />
             </Col>
           </Row>

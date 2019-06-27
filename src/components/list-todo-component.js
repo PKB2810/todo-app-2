@@ -3,36 +3,106 @@ import { ListGroup, ListGroupItem } from "reactstrap";
 import { Button } from "reactstrap";
 import { COMPLETED } from "../globalConstants";
 
-function EditTask({ task, textboxChangeHandler }) {
-  console.log("abc");
-  return (
-    <input type="text" value={task.task} onChange={textboxChangeHandler} />
-  );
+class EditTask extends React.Component {
+  constructor(props) {
+    super(props);
+    this.state = { value: this.props.task.task }; //get task name from parent
+  }
+  updateTextbox = e => {
+    e.persist();
+    console.log(e.target.value);
+    this.setState({ value: e.target.value });
+  };
+
+  componentWillUnmount() {
+    //console.log("inside unmount");
+    this.props.updateTodo(this.props.task, this.state.value);
+  }
+
+  render() {
+    const currentTaskName = this.state.value;
+    return (
+      <input
+        id="editTextbox"
+        type="text"
+        value={currentTaskName}
+        onChange={e => this.updateTextbox(e)}
+      />
+    );
+  }
 }
-function ListTodo({ todo, changeToComplete, textboxChangeHandler }) {
-  if (Array.isArray(todo)) {
-    const [clicked, setClicked] = useState(false);
-    const list = todo.filter(item => item.status !== COMPLETED);
-    const listOfTodo = list.map((item, index) => {
-      return (
-        <ListGroupItem key={index}>
-          <div
-            onClick={() => {
-              setClicked(!clicked);
+class ListTodo extends Component {
+  constructor(props) {
+    super(props);
+    this.state = { enableTextbox: false };
+  }
+
+  render() {
+    if (Array.isArray(this.props.todo)) {
+      const list = this.props.todo.filter(item => item.status !== COMPLETED);
+      const listOfTodo = list.map((item, index) => {
+        return (
+          <ListItemTodo
+            item={item}
+            index={index}
+            updateTodo={this.props.updateTodo}
+            changeToComplete={this.props.changeToComplete}
+          />
+        );
+      });
+
+      return <ListGroup>{listOfTodo}</ListGroup>;
+    }
+    return <div> </div>;
+  }
+}
+
+class ListItemTodo extends Component {
+  constructor(props) {
+    super(props);
+    this.state = { enableTextbox: false };
+  }
+  toggleTextbox = () => {
+    this.setState({ enableTextbox: !this.state.enableTextbox });
+  };
+
+  render() {
+    const listItem = (
+      <ListGroupItem key={this.props.index}>
+        <div>
+          <span>{this.props.item.id + " "}</span>
+          <span
+            onClick={e => {
+              //console.log(textToggle);
+              //textToggle = !textToggle;
+              this.toggleTextbox();
+              e.stopPropagation();
             }}
           >
-            {item.id + " " + item.task + " " + "status: " + item.status + " "}
-          </div>
-          <Button color="success" onClick={() => changeToComplete(item)}>
-            Mark as Complete
-          </Button>
-        </ListGroupItem>
-      );
-    });
+            {this.props.item.task}
+          </span>
+          {this.state.enableTextbox === true ? (
+            <EditTask
+              task={this.props.item}
+              updateTextbox={this.updateTextbox}
+              updateTodo={this.props.updateTodo}
+            />
+          ) : (
+            <span />
+          )}
+          <span> {" " + "status: " + this.props.item.status + " "} </span>
+        </div>
+        <Button
+          color="success"
+          onClick={() => this.props.changeToComplete(this.props.item)}
+        >
+          Mark as Complete
+        </Button>
+      </ListGroupItem>
+    );
 
-    return <ListGroup>{listOfTodo}</ListGroup>;
+    return <ListGroup>{listItem}</ListGroup>;
   }
-  return <div> </div>;
 }
 
 export default ListTodo;
