@@ -37,7 +37,8 @@ function Main({ todoList, addTodo, completedTodo, updateTodo }) {
     console.log(e.target);
     setValue(e.target.value);
   };
-  const addTask = () => {
+  const addTask = e => {
+    e.preventDefault();
     let count = localStorage.getItem("count")
       ? parseInt(localStorage.getItem("count")) + 1
       : 0;
@@ -68,7 +69,12 @@ function Main({ todoList, addTodo, completedTodo, updateTodo }) {
               <Input value={value} onChange={textboxChangeHandler} />
             </Col>
             <Col className="col-12 col-sm-3">
-              <Button color="primary" onClick={addTask} value="Add">
+              <Button
+                type="submit"
+                color="primary"
+                onClick={e => addTask(e)}
+                value="Add"
+              >
                 Add
               </Button>
             </Col>

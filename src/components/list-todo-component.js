@@ -11,7 +11,11 @@ class EditTask extends React.Component {
   updateTextbox = e => {
     e.persist();
     console.log(e.target.value);
-    this.setState({ value: e.target.value });
+    if (e.target.value.trim() === "") {
+      this.setState({ value: this.props.task.task });
+    } else {
+      this.setState({ value: e.target.value });
+    }
   };
 
   componentWillUnmount() {
@@ -27,6 +31,11 @@ class EditTask extends React.Component {
         type="text"
         value={currentTaskName}
         onChange={e => this.updateTextbox(e)}
+        onKeyDown={e => {
+          if (e.key === "Enter") {
+            this.props.toggleTextbox();
+          }
+        }}
       />
     );
   }
@@ -71,24 +80,25 @@ class ListItemTodo extends Component {
       <ListGroupItem key={this.props.index}>
         <div>
           <span>{this.props.item.id + " "}</span>
-          <span
-            onClick={e => {
-              //console.log(textToggle);
-              //textToggle = !textToggle;
-              this.toggleTextbox();
-              e.stopPropagation();
-            }}
-          >
-            {this.props.item.task}
-          </span>
+
           {this.state.enableTextbox === true ? (
             <EditTask
               task={this.props.item}
               updateTextbox={this.updateTextbox}
               updateTodo={this.props.updateTodo}
+              toggleTextbox={this.toggleTextbox}
             />
           ) : (
-            <span />
+            <span
+              onClick={e => {
+                //console.log(textToggle);
+                //textToggle = !textToggle;
+                this.toggleTextbox();
+                e.stopPropagation();
+              }}
+            >
+              {this.props.item.task}
+            </span>
           )}
           <span> {" " + "status: " + this.props.item.status + " "} </span>
         </div>
