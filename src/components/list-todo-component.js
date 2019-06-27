@@ -11,11 +11,7 @@ class EditTask extends React.Component {
   updateTextbox = e => {
     e.persist();
     console.log(e.target.value);
-    if (e.target.value.trim() === "") {
-      this.setState({ value: this.props.task.task });
-    } else {
-      this.setState({ value: e.target.value });
-    }
+    this.setState({ value: e.target.value });
   };
 
   componentWillUnmount() {
@@ -33,7 +29,13 @@ class EditTask extends React.Component {
         onChange={e => this.updateTextbox(e)}
         onKeyDown={e => {
           if (e.key === "Enter") {
-            this.props.toggleTextbox();
+            if (this.state.value.trim() === "") {
+              this.setState({ value: this.props.task.task }, () => {
+                this.props.toggleTextbox();
+              });
+            } else {
+              this.props.toggleTextbox();
+            }
           }
         }}
       />
